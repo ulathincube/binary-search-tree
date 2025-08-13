@@ -5,7 +5,7 @@ const buildTree = (array, start, end) => {
 
   if (start > end) return null;
 
-  const mid = Math.floor((end - start) / 2);
+  const mid = start + Math.floor((end - start) / 2);
   const root = createNode(array[mid]);
 
   root.left = buildTree(array, start, mid - 1);
@@ -19,10 +19,18 @@ function createNode(data, left = null, right = null) {
 }
 
 function createTree(array, root = null) {
-  const sortedUniqueArray = [...new Set(genericArray)].sort((a, b) => a - b);
-  root = buildTree(sortedUniqueArray);
-  const insert = value => {};
+  const sortedUniqueArray = [...new Set(array)].sort((a, b) => a - b);
+
+  root = buildTree(sortedUniqueArray, 0, sortedUniqueArray.length - 1);
+
+  const insert = value => {
+    console.log(root);
+  };
   const deleteItem = value => {};
 
   return { array, insert, deleteItem };
 }
+
+const binarySearchTree = createTree(genericArray);
+
+// binarySearchTree.insert(55);
