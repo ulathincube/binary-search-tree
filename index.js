@@ -24,8 +24,36 @@ function createTree(array, root = null) {
   root = buildTree(sortedUniqueArray, 0, sortedUniqueArray.length - 1);
 
   const insert = value => {
-    console.log(root);
+    const newNode = createNode(value);
+    let currentNode = root;
+    let previousNode = null;
+
+    while (currentNode) {
+      if (value > currentNode.data) {
+        previousNode = currentNode;
+        currentNode = currentNode.right;
+
+        if (!currentNode) {
+          previousNode.right = newNode;
+        }
+      } else if (value < currentNode.data) {
+        previousNode = currentNode;
+        currentNode = currentNode.left;
+
+        if (!currentNode) {
+          previousNode.left = newNode;
+        }
+      } else {
+        throw new Error(
+          'Please do not enter duplicates into the Binary Search Tree!'
+        );
+        // value is equal to node value
+      }
+    }
+
+    console.log(root, root.right, root.left);
   };
+
   const deleteItem = value => {};
 
   return { array, insert, deleteItem };
@@ -33,4 +61,4 @@ function createTree(array, root = null) {
 
 const binarySearchTree = createTree(genericArray);
 
-// binarySearchTree.insert(55);
+binarySearchTree.insert(55);
