@@ -93,11 +93,34 @@ function createTree(array, root = null) {
     prettyPrint(root);
   };
 
-  return { insert, deleteItem };
+  const find = value => {
+    let foundNode = null;
+
+    const findRecursive = root => {
+      if (!root) {
+        throw new Error('Key not found!');
+      }
+      if (root.data === value) {
+        foundNode = root;
+        return root;
+      } else {
+        if (root.data < value) {
+          root.right = findRecursive(root.right);
+        } else if (root.data > value) {
+          root.left = findRecursive(root.left);
+        }
+        return root;
+      }
+    };
+
+    findRecursive(root);
+
+    return foundNode;
+  };
+
+  return { insert, deleteItem, find };
 }
 
 const binarySearchTree = createTree(genericArray);
 
-binarySearchTree.insert(55);
-
-binarySearchTree.deleteItem(55);
+binarySearchTree.find(23);
