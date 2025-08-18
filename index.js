@@ -35,21 +35,69 @@ function createTree(array, root = null) {
           root.right = insertRecursive(root.right);
         } else if (root.data > value) {
           root.left = insertRecursive(root.left);
+        } else if (root.data === value) {
+          throw new Error('No duplicates allowed!');
         }
 
         return root;
       }
     };
 
-    insertRecursive(currentNode, value);
+    insertRecursive(currentNode);
     prettyPrint(root);
   };
 
-  const deleteItem = value => {};
+  const deleteItem = value => {
+    let currentNode = root;
+    const deleteRecursive = (root, value) => {
+      if (!root) {
+        throw new Error('This key does not exist!');
+      }
 
-  return { array, insert, deleteItem };
+      if (root.data === value) {
+        if (!root.left && !root.right) {
+          return null;
+        }
+
+        if (!root.left) {
+          return root.right;
+        }
+
+        if (!root.right) {
+          return root.left;
+        } else {
+          let currentNode = root;
+
+          let inOrderSuccessor = currentNode.right;
+
+          while (inOrderSuccessor.left) {
+            inOrderSuccessor = inOrderSuccessor.left;
+          }
+
+          root.data = inOrderSuccessor.data;
+          root.right = deleteRecursive(root.right, inOrderSuccessor.data);
+          prettyPrint(root);
+          return root;
+        }
+      } else {
+        if (root.data > value) {
+          root.left = deleteRecursive(root.left, value);
+        } else if (root.data < value) {
+          root.right = deleteRecursive(root.right, value);
+        }
+        return root;
+      }
+    };
+
+    deleteRecursive(currentNode, value);
+    prettyPrint(root);
+  };
+
+  return { insert, deleteItem };
 }
 
 const binarySearchTree = createTree(genericArray);
 
 binarySearchTree.insert(55);
+
+binarySearchTree.deleteItem(55);
