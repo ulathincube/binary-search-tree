@@ -1,3 +1,4 @@
+import prettyPrint from './pretty-print.js';
 const genericArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const buildTree = (array, start, end) => {
@@ -24,34 +25,24 @@ function createTree(array, root = null) {
   root = buildTree(sortedUniqueArray, 0, sortedUniqueArray.length - 1);
 
   const insert = value => {
-    const newNode = createNode(value);
     let currentNode = root;
-    let previousNode = null;
 
-    while (currentNode) {
-      if (value > currentNode.data) {
-        previousNode = currentNode;
-        currentNode = currentNode.right;
-
-        if (!currentNode) {
-          previousNode.right = newNode;
-        }
-      } else if (value < currentNode.data) {
-        previousNode = currentNode;
-        currentNode = currentNode.left;
-
-        if (!currentNode) {
-          previousNode.left = newNode;
-        }
+    const insertRecursive = root => {
+      if (root === null) {
+        return createNode(value);
       } else {
-        throw new Error(
-          'Please do not enter duplicates into the Binary Search Tree!'
-        );
-        // value is equal to node value
-      }
-    }
+        if (root.data < value) {
+          root.right = insertRecursive(root.right);
+        } else if (root.data > value) {
+          root.left = insertRecursive(root.left);
+        }
 
-    console.log(root, root.right, root.left);
+        return root;
+      }
+    };
+
+    insertRecursive(currentNode, value);
+    prettyPrint(root);
   };
 
   const deleteItem = value => {};
