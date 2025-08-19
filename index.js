@@ -152,6 +152,30 @@ function createTree(array, root = null) {
     return callback(root);
   };
 
+  const height = value => {
+    let currentLevel = 0;
+    let currentNode = root;
+
+    const getHeightRecursive = root => {
+      if (root === null || root.data === value) {
+        return;
+      }
+
+      currentLevel++;
+      if (root.data > value) {
+        root.left = getHeightRecursive(root.left);
+      } else if (root.data < value) {
+        root.right = getHeightRecursive(root.right);
+      }
+
+      return root;
+    };
+
+    getHeightRecursive(currentNode, value);
+
+    console.log('HEIGHT', currentLevel);
+  };
+
   return {
     insert,
     deleteItem,
@@ -160,6 +184,7 @@ function createTree(array, root = null) {
     inOrderForEach,
     preOrderForEach,
     postOrderForEach,
+    height,
   };
 }
 
@@ -181,9 +206,7 @@ const recursePreOrder = root => {
 };
 
 const recursePostOrder = root => {
-  if (root === null) {
-    return;
-  }
+  if (root === null) return;
 
   recursePostOrder(root.left);
   recursePostOrder(root.right);
@@ -191,7 +214,7 @@ const recursePostOrder = root => {
   console.log(root.data);
 };
 
-const passThroughEachLevel = root => {
+const iterateLevelOrder = root => {
   let queue = [root];
   const result = [];
 
@@ -226,3 +249,5 @@ const binarySearchTree = createTree(genericArray);
 binarySearchTree.find(23);
 
 binarySearchTree.postOrderForEach(recursePostOrder);
+
+binarySearchTree.height(23);
