@@ -201,6 +201,38 @@ function createTree(array, root = null) {
     console.log('DEPTH', currentLevel);
   };
 
+  const isBalanced = () => {
+    const isBalancedRecursive = root => {
+      const getHeightRecursive = root => {
+        if (root === null) {
+          return -1;
+        }
+
+        const leftHeight = getHeightRecursive(root.left);
+        const rightHeight = getHeightRecursive(root.right);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+      };
+
+      if (root === null) {
+        return true;
+      }
+
+      const leftHeight = getHeightRecursive(root.left);
+      const rightHeight = getHeightRecursive(root.right);
+
+      const heightDifference = Math.abs(leftHeight - rightHeight);
+
+      if (heightDifference > 1) {
+        return false;
+      }
+
+      return isBalancedRecursive(root.left) && isBalancedRecursive(root.right);
+    };
+
+    return isBalancedRecursive(root);
+  };
+
   return {
     insert,
     deleteItem,
@@ -211,6 +243,7 @@ function createTree(array, root = null) {
     postOrderForEach,
     height,
     depth,
+    isBalanced,
   };
 }
 
@@ -222,7 +255,9 @@ const binarySearchTree = createTree(genericArray);
 
 // binarySearchTree.postOrderForEach(recursePostOrder);
 
-binarySearchTree.depth(8);
+// binarySearchTree.depth(8);
 
 // console.log(binarySearchTree.height(324));
-console.log(binarySearchTree.height(67));
+// console.log(binarySearchTree.height(67));
+
+console.log(binarySearchTree.isBalanced());
