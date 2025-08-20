@@ -329,7 +329,20 @@ const driver = number => {
 
   printNodesInLevelOrder();
   printNodesInOrder();
+  printNodesPreOrder();
+  printNodesPostOrder();
 
+  binarySearchTree.insert(130);
+  binarySearchTree.insert(105);
+
+  console.log('isBalanced:', binarySearchTree.isBalanced());
+
+  binarySearchTree.rebalance();
+
+  console.log('isBalanced:', binarySearchTree.isBalanced());
+
+  printNodesInLevelOrder();
+  printNodesInOrder();
   printNodesPreOrder();
   printNodesPostOrder();
 };
