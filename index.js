@@ -258,7 +258,7 @@ function createTree(array) {
   };
 }
 
-const binarySearchTree = createTree(genericArray);
+// const binarySearchTree = createTree(genericArray);
 
 // binarySearchTree.find(23);
 
@@ -275,6 +275,63 @@ const binarySearchTree = createTree(genericArray);
 
 // binarySearchTree.inOrderForEach(recurseInOrder);
 
-binarySearchTree.rebalance();
+// binarySearchTree.rebalance();
 
-const driver = () => {};
+const driver = number => {
+  let arrayOfNumbers = [];
+  for (let i = 0; i < number; i++) {
+    const randomInt = Math.floor(Math.random() * 100);
+    arrayOfNumbers.push(randomInt);
+  }
+
+  const binarySearchTree = createTree(arrayOfNumbers);
+
+  const isBalanced = binarySearchTree.isBalanced();
+  console.log('IsBalanced', isBalanced);
+
+  const printNodesInLevelOrder = () => {
+    const nodesInLevelOrder =
+      binarySearchTree.levelOrderForEach(iterateLevelOrder);
+    console.log('***LEVEL ORDER TRAVERSAL***');
+
+    for (let i = 0; i < nodesInLevelOrder.length; i++) {
+      console.log(nodesInLevelOrder[i]);
+    }
+  };
+
+  const printNodesInOrder = () => {
+    const nodesInOrder = binarySearchTree.inOrderForEach(recurseInOrder);
+
+    console.log('***IN ORDER TRAVERSAL***');
+
+    for (let i = 0; i < nodesInOrder.length; i++) {
+      console.log(nodesInOrder[i]);
+    }
+  };
+
+  const printNodesPreOrder = () => {
+    const nodes = binarySearchTree.preOrderForEach(recursePostOrder);
+    console.log('***PRE ORDER TRAVERSAL***');
+
+    for (let i = 0; i < nodes.length; i++) {
+      console.log(nodes[i]);
+    }
+  };
+
+  const printNodesPostOrder = () => {
+    const nodes = binarySearchTree.postOrderForEach(recursePostOrder);
+    console.log('***POST ORDER TRAVERSAL***');
+
+    for (let i = 0; i < nodes.length; i++) {
+      console.log(nodes[i]);
+    }
+  };
+
+  printNodesInLevelOrder();
+  printNodesInOrder();
+
+  printNodesPreOrder();
+  printNodesPostOrder();
+};
+
+driver(30);

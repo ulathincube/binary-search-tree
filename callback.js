@@ -1,6 +1,5 @@
 const recurseInOrder = (root, array = []) => {
   if (root === null) {
-    console.log(array);
     return;
   }
 
@@ -13,22 +12,25 @@ const recurseInOrder = (root, array = []) => {
   return array;
 };
 
-const recursePreOrder = root => {
+const recursePreOrder = (root, array = []) => {
   if (root === null) return;
 
-  console.log(root.data);
+  array.push(root.data);
 
-  recursePreOrder(root.left);
-  recursePreOrder(root.right);
+  recursePreOrder(root.left, array);
+  recursePreOrder(root.right, array);
+
+  return array;
 };
 
-const recursePostOrder = root => {
+const recursePostOrder = (root, array = []) => {
   if (root === null) return;
 
-  recursePostOrder(root.left);
-  recursePostOrder(root.right);
+  recursePostOrder(root.left, array);
+  recursePostOrder(root.right, array);
+  array.push(root.data);
 
-  console.log(root.data);
+  return array;
 };
 
 const iterateLevelOrder = root => {
@@ -55,8 +57,6 @@ const iterateLevelOrder = root => {
     }
     currentLevel++;
   }
-
-  console.log(result);
 
   return result;
 };
