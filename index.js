@@ -1,4 +1,11 @@
 import prettyPrint from './pretty-print.js';
+import {
+  recurseInOrder,
+  recursePostOrder,
+  recursePreOrder,
+  iterateLevelOrder,
+} from './callback.js';
+
 const genericArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const buildTree = (array, start, end) => {
@@ -116,6 +123,7 @@ function createTree(array, root = null) {
     };
 
     findRecursive(root);
+    console.log('found', foundNode);
 
     return foundNode;
   };
@@ -153,27 +161,44 @@ function createTree(array, root = null) {
   };
 
   const height = value => {
+    const foundNode = find(value);
+
+    const getHeightRecursive = root => {
+      if (root === null) {
+        return -1;
+      }
+
+      let leftHeight = getHeightRecursive(root.left);
+      let rightHeight = getHeightRecursive(root.right);
+
+      return Math.max(leftHeight, rightHeight) + 1;
+    };
+
+    return getHeightRecursive(foundNode);
+  };
+
+  const depth = value => {
     let currentLevel = 0;
     let currentNode = root;
 
-    const getHeightRecursive = root => {
+    const getDepthRecursive = root => {
       if (root === null || root.data === value) {
         return;
       }
 
       currentLevel++;
       if (root.data > value) {
-        root.left = getHeightRecursive(root.left);
+        root.left = getDepthRecursive(root.left);
       } else if (root.data < value) {
-        root.right = getHeightRecursive(root.right);
+        root.right = getDepthRecursive(root.right);
       }
 
       return root;
     };
 
-    getHeightRecursive(currentNode, value);
+    getDepthRecursive(currentNode, value);
 
-    console.log('HEIGHT', currentLevel);
+    console.log('DEPTH', currentLevel);
   };
 
   return {
@@ -185,69 +210,19 @@ function createTree(array, root = null) {
     preOrderForEach,
     postOrderForEach,
     height,
+    depth,
   };
 }
 
-const recurseInOrder = root => {
-  if (root === null) return;
-
-  recurseInOrder(root.left);
-  console.log(root.data);
-  recurseInOrder(root.right);
-};
-
-const recursePreOrder = root => {
-  if (root === null) return;
-
-  console.log(root.data);
-
-  recursePreOrder(root.left);
-  recursePreOrder(root.right);
-};
-
-const recursePostOrder = root => {
-  if (root === null) return;
-
-  recursePostOrder(root.left);
-  recursePostOrder(root.right);
-
-  console.log(root.data);
-};
-
-const iterateLevelOrder = root => {
-  let queue = [root];
-  const result = [];
-
-  let currentLevel = 0;
-  while (queue.length > 0) {
-    let queueLength = queue.length;
-
-    result.push([]);
-
-    for (let i = 0; i < queueLength; i++) {
-      let currentNode = queue.shift();
-      result[currentLevel].push(currentNode.data);
-
-      if (currentNode.left) {
-        queue.push(currentNode.left);
-      }
-
-      if (currentNode.right) {
-        queue.push(currentNode.right);
-      }
-    }
-    currentLevel++;
-  }
-
-  console.log(result);
-
-  return result;
-};
-
 const binarySearchTree = createTree(genericArray);
 
-binarySearchTree.find(23);
+// binarySearchTree.find(23);
 
-binarySearchTree.postOrderForEach(recursePostOrder);
+// binarySearchTree.levelOrderForEach(iterateLevelOrder);
 
-binarySearchTree.height(23);
+// binarySearchTree.postOrderForEach(recursePostOrder);
+
+binarySearchTree.depth(8);
+
+// console.log(binarySearchTree.height(324));
+console.log(binarySearchTree.height(67));
