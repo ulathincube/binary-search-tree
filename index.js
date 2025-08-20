@@ -26,10 +26,10 @@ function createNode(data, left = null, right = null) {
   return { data, left, right };
 }
 
-function createTree(array, root = null) {
+function createTree(array) {
   const sortedUniqueArray = [...new Set(array)].sort((a, b) => a - b);
 
-  root = buildTree(sortedUniqueArray, 0, sortedUniqueArray.length - 1);
+  let root = buildTree(sortedUniqueArray, 0, sortedUniqueArray.length - 1);
 
   prettyPrint(root);
 
@@ -233,6 +233,16 @@ function createTree(array, root = null) {
     return isBalancedRecursive(root);
   };
 
+  const rebalance = () => {
+    const array = inOrderForEach(recurseInOrder);
+
+    const sortedUniqueArray = [...new Set(array)].sort((a, b) => a - b);
+
+    root = buildTree(sortedUniqueArray, 0, sortedUniqueArray.length - 1);
+
+    prettyPrint(root);
+  };
+
   return {
     insert,
     deleteItem,
@@ -244,6 +254,7 @@ function createTree(array, root = null) {
     height,
     depth,
     isBalanced,
+    rebalance,
   };
 }
 
@@ -260,4 +271,10 @@ const binarySearchTree = createTree(genericArray);
 // console.log(binarySearchTree.height(324));
 // console.log(binarySearchTree.height(67));
 
-console.log(binarySearchTree.isBalanced());
+// console.log(binarySearchTree.isBalanced());
+
+// binarySearchTree.inOrderForEach(recurseInOrder);
+
+binarySearchTree.rebalance();
+
+const driver = () => {};

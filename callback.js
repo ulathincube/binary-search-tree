@@ -1,9 +1,16 @@
-const recurseInOrder = root => {
-  if (root === null) return;
+const recurseInOrder = (root, array = []) => {
+  if (root === null) {
+    console.log(array);
+    return;
+  }
 
-  recurseInOrder(root.left);
-  console.log(root.data);
-  recurseInOrder(root.right);
+  recurseInOrder(root.left, array);
+  // array.push(root.data);
+  array.push(root.data);
+
+  recurseInOrder(root.right, array);
+
+  return array;
 };
 
 const recursePreOrder = root => {
